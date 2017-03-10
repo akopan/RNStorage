@@ -6,6 +6,7 @@ import {
   StyleSheet
 } from 'react-native'
 import { ListView } from 'realm/react-native'
+import SwipeRow from '../components/swipeRow.js'
 
 export default class App extends Component {
   state = {textInput: ''}
@@ -16,6 +17,22 @@ export default class App extends Component {
     }
     this.setState({textInput: ''})
   }
+
+  renderRow(todoItem) {
+    return (
+      <View>
+        <View style={styles.row}>
+          <SwipeRow
+            index={todoItem.id}
+            title={todoItem.value}
+            text={todoItem.value}
+            state={todoItem.completed}
+          />
+        </View>
+      </View>
+    );
+  }
+
   render () {
     const {dataSource, deleteTodoItem} = this.props
     const {textInput} = this.state
@@ -30,13 +47,19 @@ export default class App extends Component {
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
           dataSource={dataSource}
-          renderRow={(todoItem) => <Text onPress={() => deleteTodoItem(todoItem)}>{todoItem.value}</Text>}
+          renderRow={(todoItem) => this.renderRow(todoItem) }
         />
       </View>
     )
   }
 }
-
+// onPress={() => deleteTodoItem(todoItem)}
+// <SwipeRow
+//           index={1}
+//           title={'title'}
+//           text={'text'}
+//           state={'state'}
+//         />
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -49,5 +72,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     marginHorizontal: 12,
     paddingHorizontal: 12
+  },
+  row: {
+    borderBottomWidth: 0,
+    padding: 0,
+    justifyContent: 'space-between'
   }
 })
