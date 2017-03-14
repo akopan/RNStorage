@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {TYPO, PRIMARY_COLORS, COLOR, Checkbox} from 'react-native-material-design';
 
-import SwipeableViews from 'react-swipeable-views';
+import SwipeableViews from 'react-swipeable-views-native';
 // There is another version. I'm unsure which one give the best UX.
 // import SwipeableViews from 'react-swipeable-views/lib/index.native.scroll';
 
-class SwipeRow extends Component {
+export default class SwipeRow extends Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
@@ -50,7 +50,7 @@ class SwipeRow extends Component {
     return (
       <SwipeableViews
         onChangeIndex={this.handleChangeIndex}
-        containerStyle={styles.swipeContainer}
+        style={styles.swipeContainer}
         resistance={true}
         index={this.state.index}
       >
@@ -87,8 +87,6 @@ class SwipeRow extends Component {
     )
   };
 }
-
-export default SwipeRow;
 
 const styles = StyleSheet.create({
   swipeContainer: {
