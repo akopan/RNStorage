@@ -9,7 +9,7 @@ import SwipeableViews from 'react-swipeable-views-native';
 
 export default class SwipeRow extends Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
+    index: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
     text: PropTypes.string

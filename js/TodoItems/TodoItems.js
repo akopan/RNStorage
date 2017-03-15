@@ -9,13 +9,7 @@ import { ListView } from 'realm/react-native'
 import SwipeRow from '../components/swipeRow.js'
 
 export default class App extends Component {
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
-    };
-  }
+
   state = {textInput: ''}
   _onSubmit (e) {
     const {createTodoItem} = this.props
@@ -24,24 +18,10 @@ export default class App extends Component {
     }
     this.setState({textInput: ''})
   }
-
-  renderRow(todoItem) {
-    return (
-      <View>
-        <View style={styles.row}>
-          <SwipeRow
-            index={todoItem.id}
-            title={todoItem.value}
-            text={todoItem.value}
-            state={todoItem.completed}
-          />
-        </View>
-      </View>
-    );
-  }
+  // }
 
   render () {
-    // const {dataSource, deleteTodoItem} = this.props
+    const {dataSource, deleteTodoItem} = this.props
     const {textInput} = this.state
     return (
       <View style={styles.container}>
@@ -53,20 +33,20 @@ export default class App extends Component {
           value={textInput}
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow}
+          dataSource={dataSource}
+          renderRow={(todoItem) => <SwipeRow
+            index={todoItem.id}
+            title={todoItem.value}
+            text={todoItem.value}
+            state={todoItem.completed}
+          />
+        }
         />
       </View>
     )
   }
 }
 // onPress={() => deleteTodoItem(todoItem)}
-// <SwipeRow
-//           index={1}
-//           title={'title'}
-//           text={'text'}
-//           state={'state'}
-//         />
 const styles = StyleSheet.create({
   container: {
     flex: 1,
