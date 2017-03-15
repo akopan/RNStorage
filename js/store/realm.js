@@ -10,7 +10,7 @@ class TodoItem {
     properties: {
       id: {type: 'string'},
       value: {type: 'string'},
-      completed: {type: 'bool', default: false},
+      completed: {type: 'string', default: 'active'},
       createdTimestamp: {type: 'date'}
     }
   }
