@@ -9,6 +9,13 @@ import { ListView } from 'realm/react-native'
 import SwipeRow from '../components/swipeRow.js'
 
 export default class App extends Component {
+  constructor() {
+    super();
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+    };
+  }
   state = {textInput: ''}
   _onSubmit (e) {
     const {createTodoItem} = this.props
@@ -34,7 +41,7 @@ export default class App extends Component {
   }
 
   render () {
-    const {dataSource, deleteTodoItem} = this.props
+    // const {dataSource, deleteTodoItem} = this.props
     const {textInput} = this.state
     return (
       <View style={styles.container}>
@@ -46,8 +53,8 @@ export default class App extends Component {
           value={textInput}
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
-          dataSource={dataSource}
-          renderRow={(todoItem) => this.renderRow(todoItem) }
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow}
         />
       </View>
     )
