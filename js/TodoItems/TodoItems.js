@@ -20,6 +20,21 @@ export default class App extends Component {
   }
   // }
 
+  renderRow(todoItem) {
+    return (
+      <View>
+        <View style={styles.row}>
+          <SwipeRow
+            index={todoItem.id}
+            title={todoItem.value}
+            text={todoItem.value}
+            state={todoItem.completed}
+          />
+        </View>
+      </View>
+    );
+  }
+
   render () {
     const {dataSource, deleteTodoItem} = this.props
     const {textInput} = this.state
@@ -34,13 +49,7 @@ export default class App extends Component {
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
           dataSource={dataSource}
-          renderRow={(todoItem) => <SwipeRow
-            index={todoItem.id}
-            title={todoItem.value}
-            text={todoItem.value}
-            state={todoItem.completed}
-          />
-        }
+          renderRow={this.renderRow}
         />
       </View>
     )
