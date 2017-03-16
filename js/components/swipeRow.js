@@ -12,10 +12,13 @@ export default class SwipeRow extends Component {
     index: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
-    text: PropTypes.string
+    text: PropTypes.string,
+    onSwipe: PropTypes.func
   };
   constructor(props) {
     super(props);
+    console.log(props)
+    console.log(this)
     this.state = {
       index: 1,
       state: props.state,
@@ -25,12 +28,18 @@ export default class SwipeRow extends Component {
 
   handleChangeIndex = (newindex, fromindex) => {
     getSwipeAction = (newIndex, oldIndex) => {
-      if (oldIndex > newindex) {
-        return "done"
-      } else if (oldIndex < newindex) {
-        return "defer"
+      console.log("getting swipe action")
+      if (this.props.onSwipe && oldIndex > newindex) {
+        this.props.onSwipe(newIndex, oldIndex);
+        return "onSwipe called"
       } else {
-        return "active"
+        if (oldIndex > newindex) {
+          return "done"
+        } else if (oldIndex < newindex) {
+          return "defer"
+        } else {
+          return "active"
+        }
       }
     };
     const swipeAction = getSwipeAction(newindex, this.state.index);
