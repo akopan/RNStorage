@@ -11,7 +11,8 @@ class TodoItem {
       id: {type: 'string'},
       value: {type: 'string'},
       completed: {type: 'string', default: 'active'},
-      createdTimestamp: {type: 'date'}
+      createdTimestamp: {type: 'date'},
+      timeOfDay: {type: 'string', default: 'morning'}
     }
   }
 }
@@ -23,12 +24,17 @@ export const getTodoItems = () => {
   return todoItems
 }
 
+// export const getTodoItemsCompleted = () => {
+//   const todoItems = TodoItem.get().sorted()
+// }
+
 export const getTodoItem = (id) => {
   const todoItem = realm.objectForPrimaryKey(TodoItem, id)
   return todoItem
 }
 
 export const updateTodoItem = (todoItem, value, completed) => {
+  console.log(todoItem,value,completed)
   realm.write(() => {
     try {
       todoItem.value = value

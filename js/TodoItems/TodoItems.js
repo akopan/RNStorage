@@ -12,43 +12,63 @@ export default class App extends Component {
   state = {textInput: ''}
   _onSubmit (e) {
     const {createTodoItem} = this.props
+    console.log(createTodoItem)
     if (e && e.nativeEvent.text.trim().length > 0) {
       createTodoItem(e.nativeEvent.text.trim())
     }
     this.setState({textInput: ''})
   }
 
-  handleSwipeAction = (start,end) => {
-    console.warn(start);
-    console.warn(end);
-    if (oldIndex > newindex) {
+  handleSwipeAction = (start,end,todoItem) => {
+    // console.log(this.props)
+    const {updateTodoItem} = this.props
+    const {getTodoItem} = this.props
+    // console.warn(start);
+    // console.warn(end);
+    if (start > end) {
       _state = "done"
-    } else if (oldIndex < newindex) {
+    } else if (start < end) {
       _state = "defer"
     } else {
       _state = "active"
     }
+    console.log("State: "+_state)
+    updateTodoItem(getTodoItem(todoItem.index).data, todoItem.text, _state)
   }
   renderRow(todoItem) {
-    return (
-      <View>
-        <View style={styles.row}>
-          <SwipeRow
-            index={todoItem.id}
-            title={todoItem.value}
-            text={todoItem.value}
-            state={todoItem.completed}
-            onSwipe={this.handleSwipeAction}
-          />
+    // console.log(todoItem);
+    if (todoItem.completed == 'active') {
+      return (
+        <View>
+          <View style={styles.row}>
+            <SwipeRow
+              index={todoItem.id}
+              title={todoItem.value}
+              text={todoItem.value}
+              state={todoItem.completed}
+              onSwipe={this.handleSwipeAction}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      // return null;
+      return (
+        <View>
+          <View style={styles.row}>
+            <Text>{todoItem.value} is done!</Text>
+          </View>
+        </View>
+      );
+    }
   }
 
+// onPress={() => deleteTodoItem(todoItem)}
   render () {
-    // console.log(this.handleSwipeAction(1,2))
-    const {dataSource, deleteTodoItem} = this.props
+    // console.log(this.props)
+    const {dataSource, deleteTodoItem, getTodoItem} = this.props
     const {textInput} = this.state
+    // console.log(dataSource);
     return (
       <View style={styles.container}>
         <TextInput
@@ -60,21 +80,12 @@ export default class App extends Component {
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
           dataSource={dataSource}
-          renderRow={(todoItem) =>
-            <SwipeRow
-              index={todoItem.id}
-              title={todoItem.value}
-              text={todoItem.value}
-              state={todoItem.completed}
-              onSwipe={this.handleSwipeAction}
-            />
-          }
+          renderRow={this.renderRow.bind(this)}
         />
       </View>
     )
   }
 }
-// onPress={() => deleteTodoItem(todoItem)}
 // <SwipeRow
 //           index={1}
 //           title={'title'}

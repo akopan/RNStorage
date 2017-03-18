@@ -13,3 +13,17 @@ export const deleteTodoItem = (todoItem) => {
     type: 'TODO_ITEM_DELETED'
   }
 }
+
+export const updateTodoItem = (todoItem, value, completed) => {
+	store.updateTodoItem(todoItem, value, completed)
+	return {
+		type: 'TODO_ITEM_UPDATED'
+	}
+}
+
+export const getTodoItem = (id) => {
+	return {
+		type: 'TODO_ITEM_GET',
+		data: store.getTodoItem(id)
+	}
+}

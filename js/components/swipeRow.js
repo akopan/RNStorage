@@ -17,22 +17,20 @@ export default class SwipeRow extends Component {
   };
   constructor(props) {
     super(props);
-    console.log(props)
-    console.log(this)
     this.state = {
       index: 1,
       state: props.state,
       checked: false
     }
   }
-
-  handleChangeIndex = (newindex, fromindex) => {
+  handleSwitch = (index, type) => {
+    console.log(index,type);
+  }
+  handleChangeIndex = (todoItem, newindex, fromindex) => {
+    console.log(todoItem, newindex,fromindex);
     getSwipeAction = (newIndex, oldIndex) => {
-      console.log("getting swipe action")
-      if (this.props.onSwipe && oldIndex > newindex) {
-        this.props.onSwipe(newIndex, oldIndex);
-        return "onSwipe called"
-      } else {
+      if (this.props.onSwipe && oldIndex != newindex) {
+        this.props.onSwipe(newIndex, oldIndex, todoItem);
         if (oldIndex > newindex) {
           return "done"
         } else if (oldIndex < newindex) {
@@ -43,6 +41,7 @@ export default class SwipeRow extends Component {
       }
     };
     const swipeAction = getSwipeAction(newindex, this.state.index);
+    // console.warn(swipeAction)
     this.setState({
       state: swipeAction,
       index: newindex,
@@ -58,7 +57,7 @@ export default class SwipeRow extends Component {
   render () {
     return (
       <SwipeableViews
-        onChangeIndex={this.handleChangeIndex}
+        onChangeIndex={(n,o)=>this.handleChangeIndex(this.props,n,o)}
         style={styles.swipeContainer}
         resistance={true}
         index={this.state.index}
