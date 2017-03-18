@@ -25,15 +25,16 @@ export default class App extends Component {
     const {getTodoItem} = this.props
     // console.warn(start);
     // console.warn(end);
-    if (start > end) {
+    if (start < end) {
       _state = "done"
-    } else if (start < end) {
+    } else if (start > end) {
       _state = "defer"
     } else {
       _state = "active"
     }
     console.log("State: "+_state)
     updateTodoItem(getTodoItem(todoItem.index).data, todoItem.text, _state)
+    return _state;
   }
   renderRow(todoItem) {
     // console.log(todoItem);
@@ -56,7 +57,7 @@ export default class App extends Component {
       return (
         <View>
           <View style={styles.row}>
-            <Text>{todoItem.value} is done!</Text>
+            <Text>{todoItem.value} is in state {todoItem.completed}</Text>
           </View>
         </View>
       );
@@ -71,6 +72,7 @@ export default class App extends Component {
     // console.log(dataSource);
     return (
       <View style={styles.container}>
+        <Text style={styles.header}>DoitDoit</Text>
         <TextInput
           autoFocus
           blurOnSubmit={false}
@@ -98,12 +100,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  header: {
+    height: 50,
+    alignSelf: 'stretch',
+    color: 'white',
+    fontSize: 30,
+    backgroundColor: 'black',
+    textAlign: 'center',
+    textAlignVertical: 'center'
+  },
   textInput: {
     height: 50,
-    borderRadius: 12,
+    alignSelf: 'stretch',
+    // borderRadius: 12,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     marginHorizontal: 12,
-    paddingHorizontal: 12
+    paddingHorizontal: 12,
+    marginVertical: 10,
   },
   row: {
     borderBottomWidth: 0,

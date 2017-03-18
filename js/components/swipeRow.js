@@ -30,14 +30,14 @@ export default class SwipeRow extends Component {
     console.log(todoItem, newindex,fromindex);
     getSwipeAction = (newIndex, oldIndex) => {
       if (this.props.onSwipe && oldIndex != newindex) {
-        this.props.onSwipe(newIndex, oldIndex, todoItem);
-        if (oldIndex > newindex) {
-          return "done"
-        } else if (oldIndex < newindex) {
-          return "defer"
-        } else {
-          return "active"
-        }
+        return this.props.onSwipe(newIndex, oldIndex, todoItem);
+        // if (oldIndex > newindex) {
+        //   return "done"
+        // } else if (oldIndex < newindex) {
+        //   return "defer"
+        // } else {
+        //   return "active"
+        // }
       }
     };
     const swipeAction = getSwipeAction(newindex, this.state.index);
