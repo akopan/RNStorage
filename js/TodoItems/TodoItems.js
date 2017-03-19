@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { ListView } from 'realm/react-native'
 import SwipeRow from '../components/swipeRow.js'
+import {TYPO, PRIMARY_COLORS, COLOR, Checkbox} from 'react-native-material-design';
 
 export default class App extends Component {
   state = {textInput: ''}
@@ -34,9 +35,9 @@ export default class App extends Component {
     return _state;
   }
   renderRow(todoItem) {
-    const { deleteTodoItem } = this.props
+    const { deleteTodoItem, updateTodoItem, getTodoItem } = this.props
     console.log(todoItem);
-      if (todoItem.completed == 'active') {
+      // if (todoItem.completed == 'active') {
     return (
           <SwipeRow
             index={todoItem.id}
@@ -46,17 +47,29 @@ export default class App extends Component {
             onSwipe={this.handleSwipeAction}
           />
       );
-      } else {
+      // } else {
         return (
-            <Text style={styles.row} onPress={() => deleteTodoItem(todoItem)}>{todoItem.value} is in state {todoItem.completed}</Text>
+          <View style={[styles.row]}>
+            <Text
+            style={[styles.primaryText]}
+            onPress={() => updateTodoItem(getTodoItem(todoItem.id).data, todoItem.value, 'active')}>
+              {todoItem.value} is in state {todoItem.completed}
+            </Text>
+          </View>
         );
-      }
+      // }
   }
 
 // onPress={() => deleteTodoItem(todoItem)}
   render () {
     // console.log(this.props)
-    const {dataSource, deleteTodoItem, getTodoItem} = this.props
+    const {
+      dataSourceAll,
+      dataSourceDone,
+      dataSourceActive,
+      deleteTodoItem,
+      getTodoItem
+    } = this.props
     const {textInput} = this.state
     // console.log(dataSource);
     return (
@@ -69,7 +82,12 @@ export default class App extends Component {
           value={textInput}
           onChange={(event) => this.setState({textInput: event.nativeEvent.text})} />
         <ListView
-          dataSource={dataSource}
+          dataSource={dataSourceActive}
+          renderRow={this.renderRow.bind(this)}
+        />
+        <Text style={styles.smHeader}>Done Items</Text>
+        <ListView
+          dataSource={dataSourceDone}
           renderRow={this.renderRow.bind(this)}
         />
       </View>
@@ -97,6 +115,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center'
   },
+  smHeader: {
+    height: 40,
+    alignSelf: 'stretch',
+    color: 'white',
+    fontSize: 25,
+    backgroundColor: 'grey',
+    textAlign: 'center',
+    textAlignVertical: 'center'
+  },
   textInput: {
     height: 50,
     alignSelf: 'stretch',
@@ -107,8 +134,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   row: {
-    borderBottomWidth: 0,
-    padding: 0,
-    justifyContent: 'space-between'
-  }
+    paddingLeft: 16,
+    paddingRight: 16,
+    height: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  primaryText: Object.assign({}, TYPO.paperFontSubhead, { lineHeight: 24 }),
 })

@@ -24,9 +24,34 @@ export const getTodoItems = () => {
   return todoItems
 }
 
-// export const getTodoItemsCompleted = () => {
-//   const todoItems = TodoItem.get().sorted()
-// }
+export const getTOD = () => {
+  _curTime = new Date().getHours()
+    if ( 0 < _curTime < 12 ) {
+      return 'morning'
+    }
+    else if ( 12 < _curTime < 17 ) {
+      return 'afternoon'
+    }
+    else if ( 17 < _curTime < 24 ) {
+      return 'evening'
+    }
+}
+
+// get todos by time of day
+export const getTodoItemsByTOD = () => {
+  const todoItemsTOD = TodoItem.get().filtered('timeOfDay = "'+getTOD()+'"')
+  return todoItemsTOD
+}
+
+export const getTodoItemsCompleted = () => {
+  const todoItemsCompleted = TodoItem.get().filtered('completed = "done"')
+  return todoItemsCompleted
+}
+
+export const getTodoItemsActive = () => {
+  const todoItemsCompleted = TodoItem.get().filtered('completed = "active"')
+  return todoItemsCompleted
+}
 
 export const getTodoItem = (id) => {
   const todoItem = realm.objectForPrimaryKey(TodoItem, id)
