@@ -21,10 +21,7 @@ export default class App extends Component {
 
   handleSwipeAction = (start,end,todoItem) => {
     // console.log(this.props)
-    const {updateTodoItem} = this.props
-    const {getTodoItem} = this.props
-    // console.warn(start);
-    // console.warn(end);
+    const {updateTodoItem, getTodoItem} = this.props
     if (start < end) {
       _state = "done"
     } else if (start > end) {
@@ -37,31 +34,23 @@ export default class App extends Component {
     return _state;
   }
   renderRow(todoItem) {
-    // console.log(todoItem);
-    if (todoItem.completed == 'active') {
-      return (
-        <View>
-          <View style={styles.row}>
-            <SwipeRow
-              index={todoItem.id}
-              title={todoItem.value}
-              text={todoItem.value}
-              state={todoItem.completed}
-              onSwipe={this.handleSwipeAction}
-            />
-          </View>
-        </View>
+    const { deleteTodoItem } = this.props
+    console.log(todoItem);
+      if (todoItem.completed == 'active') {
+    return (
+          <SwipeRow
+            index={todoItem.id}
+            title={todoItem.value}
+            text={todoItem.value}
+            state={todoItem.completed}
+            onSwipe={this.handleSwipeAction}
+          />
       );
-    } else {
-      // return null;
-      return (
-        <View>
-          <View style={styles.row}>
-            <Text>{todoItem.value} is in state {todoItem.completed}</Text>
-          </View>
-        </View>
-      );
-    }
+      } else {
+        return (
+            <Text style={styles.row} onPress={() => deleteTodoItem(todoItem)}>{todoItem.value} is in state {todoItem.completed}</Text>
+        );
+      }
   }
 
 // onPress={() => deleteTodoItem(todoItem)}
@@ -74,7 +63,6 @@ export default class App extends Component {
       <View style={styles.container}>
         <Text style={styles.header}>DoitDoit</Text>
         <TextInput
-          autoFocus
           blurOnSubmit={false}
           style={styles.textInput}
           onSubmitEditing={(e) => this._onSubmit(e)}
@@ -97,8 +85,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    // justifyContent: 'center',
+    // alignItems: 'center'
   },
   header: {
     height: 50,
